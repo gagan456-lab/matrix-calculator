@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    class MatrixCalculator {
+    constructor(rows, cols) {
+        this.rows = rows;
+        this.cols = cols;
+    }
+
+    inputMatrix(name) {
+        let matrix = [];
+        console.log(`Enter the elements of ${name} (${this.rows}x${this.cols}):`);
+        for (let i = 0; i < this.rows; i++) {
+            let row = prompt(`Row ${i + 1} (space-separated):`).split(" ").map(Number);
+            if (row.length !== this.cols) {
+                console.log(`Error: Please enter exactly ${this.cols} numbers per row.`);
+                i--;
+                continue;
+            }
+            matrix.push(row);
+        }
+        return matrix;
+    }
+
+    displayMatrix(matrix, name) {
+        console.log(`${name}:`);
+        matrix.forEach(row => console.log(row.join(" ")));
+    }
+
+    addMatrices(A, B) {
+        return A.map((row, i) => row.map((val, j) => val + B[i][j]));
+    }
+
+    subtractMatrices(A, B) {
+        return A.map((row, i) => row.map((val, j) => val - B[i][j]));
+    }
+
+    scalarMultiply(matrix, scalar) {
+        return matrix.map(row => row.map(val => val * scalar));
+    }
+
+    start() {
+        let A = this.inputMatrix("Matrix A");
+        let B = this.inputMatrix("Matrix B");
+
+        while (true) {
+            console.log("\nChoose an operation:");
+            console.log("1. Addition");
+            console.log("2. Subtraction");
+            console.log("3. Multiply by scalar");
+            console.log("4. Exit");
+
+            let choice = prompt("Enter your choice (1-4):");
+
+            if (choice === "1") {
+                this.displayMatrix(this.addMatrices(A, B), "A + B");
+            } else if (choice === "2") {
+                this.displayMatrix(this.subtractMatrices(A, B), "A - B");
+            } else if (choice === "3") {
+                let scalar = Number(prompt("Enter the scalar value: "));
+                this.displayMatrix(this.scalarMultiply(A, scalar), "A * Scalar");
+                this.displayMatrix(this.scalarMultiply(B, scalar), "B * Scalar");
+            } else if (choice === "4") {
+                console.log("Exiting...");
+                break;
+            } else {
+                console.log("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
+
+const calculator = new MatrixCalculator(4, 3);
+calculator.start();</script></body>
+</html>
